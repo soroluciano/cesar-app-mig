@@ -1,0 +1,64 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/context/ http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx/ http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+ 
+
+
+    <bean id="entityManagerFactoryBean"  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+     
+        <property name="dataSource" ref="dataSource" />
+ 
+        <property name="persistenceUnitName" value="distcenter" />
+         
+        <property name="packagesToScan">
+            <list>
+                <value>distcenter.api</value>
+            </list>
+        </property>
+ 
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>
+         
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.archive.autodetection">class,hbm</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+            </props>
+        </property>
+    </bean>
+<!--      <property name="dataSourceName" value="ds"/> -->
+<!--     <property name="URL" value="jdbc:oracle:thin:@<hostname>:<port_num>:<SID>"/> -->
+<!--     <property name="user" value="dummy_user"/> -->
+<!--     <property name="password" value="dummy_pwd"/> -->
+<!-- </bean> -->
+ 
+ 
+     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="url" value="jdbc:oracle:thin:@d250aixde06.gobiernocba.gov.ar:1521:moremigd" />
+        <property name="username" value="dc_dev" />
+        <property name="password" value="dcdev" />
+    </bean>
+     
+<!--     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS"> -->
+<!--         <jdbc:script location="classpath:scripts/tempDB.sql" separator="$"/> -->
+<!--     </jdbc:initialize-database> -->
+ 
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryBean" />
+    </bean>
+<!-- 	<bean id ="conciliacionDao" class="distcenter.api.dao.ConciliacionDao"/> -->
+<!--     <tx:annotation-driven /> -->
+ 
+</beans>
